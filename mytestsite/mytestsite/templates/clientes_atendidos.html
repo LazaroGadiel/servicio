@@ -1,0 +1,410 @@
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<form >
+  <br>
+<div class="small-box bg-success" id="anuncio2">
+              
+  
+    <div class="row" style="padding-left: 1rem">
+			<div class="col-sm-2" id="desde">
+              <h3>Desde</h3>
+			
+                <div class='input-group date' id='datepicker1'>
+		           <input type='text' class="form-control" readonly="true" name="date1" id="date1" />
+		            <span class="input-group-addon">
+		            <span class="glyphicon glyphicon-calendar"></span>
+		            </span>
+		        </div>
+			</div>
+
+			<div class="col-sm-2" id="hasta">
+              <h3>Hasta</h3>
+			
+                <div class='input-group date' id='datepicker2'>
+		            <input type='text' class="form-control" readonly="true" name="date2" id="date2"/>
+		            <span class="input-group-addon">
+		            <span class="glyphicon glyphicon-calendar"></span>
+		            </span>
+		        </div>
+			</div>
+
+   <div class="col-sm-1" id="busca">
+	<h3>Buscar</h3>
+              <div><button class="btn btn-info" type="button" title="Buscar" value="Buscar" onclick="buscador()"><span><i class="fa fa-search"></i></span></button></div>
+   </div>
+
+  <div class="col-sm-2" id="limpia">
+	<h3>Limpiar</h3>
+              <div><button class="btn btn-danger" type="button" title="Limpiar" value="Limpiar" onclick="limpiar()"><span><i class="fa fa-eraser"></i></span></button></div>
+</div>
+
+	</div>
+
+
+	                 
+<br>              
+             
+</div>	
+</form>
+    
+<br>
+
+
+
+<div class="portlet light">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-cogs font-green-sharp"></i>
+								<span class="caption-subject font-green-sharp bold uppercase">CLIENTES ATENDIDOS</span>
+							</div>
+		
+						</div>
+						<div class="portlet-body">
+							<link rel="stylesheet" href="{% static 'tabla.css' %}"> 
+							<table class="table table-striped table-bordered table-hover table-condensed" id="sample_2">
+							<thead>
+									<tr>
+										
+										<th>Carnet</th>
+										<th>Nombre</th>
+										<th>Primer Apellido</th>
+										<th>Segundo Apellido</th>
+									
+										<th>Acciones</th>
+									</tr>
+								</thead>
+
+								<tbody id="atendidos">
+	
+								</tbody>
+							</table>							
+						</div>
+</div>
+
+
+
+
+
+</form>
+
+
+
+<div class="modal fade" id="detalles2" data-backdrop='static'>
+	
+    <div class="modal-dialog">
+        <div class="modal-content" id="contenido-modal">
+            <div class="modal-header">
+            	<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-cogs font-green-sharp"></i>
+								<span class="caption-subject font-green-sharp bold uppercase">DATOS DEL CLIENTE</span>
+							</div>
+		
+				</div>
+              <div class="portlet-body">
+      
+				 
+              </div>
+            
+            <div class="modal-body">
+                      
+                  <div class="dt-buttons btn-group" >   
+
+
+
+                      <button class="btn btn-secondary buttons-excel buttons-html5 btn-success" tabindex="0" aria-controls="example" type="button" title="Exportar a Excel" onclick="Excel()"><span><i class="fa fa-file-excel-o"></i> </span></button> 
+
+                      <button class="btn btn-secondary buttons-pdf buttons-html5 btn-danger" tabindex="0" aria-controls="example" type="button" title="Exportar a PDF" onclick="test()"><span><i class="fa fa-file-pdf-o"></i> </span></button>
+
+                      <button class="btn btn-secondary buttons-print btn-info" tabindex="0" aria-controls="example" type="button" title="Imprimir" href="javascript:;" onclick="javascript:window.print();"><span><i class="fa fa-print"></i> </span></button> 
+                   
+
+
+
+                   </div>
+   <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="vaciar_detalles()"></button>
+    
+            <div id="modal"> 
+					<table class="table table-striped table-bordered table-hover">
+
+						<thead>
+									<tr>
+										
+										<th>Carnet</th>
+										<th>Nombre</th>
+										<th>Primer Apellido</th>
+										<th>Segundo Apellido</th>
+										<th>Dirección</th>
+										<th>Cantidad de Servicios</th>			
+										<th>Total de Pago</th>
+										
+									
+									</tr>
+						</thead>
+						<tbody id="mostrar">
+							
+						
+						</tbody>
+						
+						<table class="table table-striped table-bordered table-hover" id="deta_atendidos">
+							<thead>
+								<tr>
+									<th>Servicios:</th>
+								</tr>
+								<tr>
+									<th>Nombre</th>
+									
+									<th>Precio</th>
+
+									<th>Cantidad</th>
+
+									<th>Total</th>
+								
+								</tr>
+							</thead>
+							<tbody id="servicios"></tbody>
+
+						</table>
+
+
+					</table>
+                
+            </div>
+           
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
+
+<script>
+
+
+function buscador() {
+	var fecha1 = $('#date1').val();
+	var fecha2 = $('#date2').val();
+
+
+		
+	if( !fecha1   && !fecha2 ){
+      Swal.fire({
+ 
+       icon: 'error',
+       title: 'Oops...',
+       text: 'Entre las fechas debidamente',
+   
+     });
+	}
+   
+   if( !fecha1){
+      Swal.fire({
+ 
+       icon: 'error',
+       title: 'Oops...',
+       text: 'Entre las fechas debidamente',
+   
+     });
+	}
+   if( !fecha2 ){
+      Swal.fire({
+ 
+       icon: 'error',
+       title: 'Oops...',
+       text: 'Entre las fechas debidamente',
+   
+     });
+	}
+   
+    
+    var url='http://'+document.location.hostname+':'+document.location.port+'/directorio/buscador';
+    
+    $.get(url+"/"+fecha1+"/"+fecha2, function (datos){
+
+    datos=JSON.parse(datos);
+   
+    if(datos == 0){
+      Swal.fire({
+       icon: 'question',
+       title: 'Oops...',
+       text: 'No existen datos en el rango de fechas',
+   
+     });
+	}
+   
+    	vaciar_atendidos();
+    	for (var i = 0; i < datos.length; i++) {
+    		 
+              var array=datos[i].date.split('-');
+              var ano=array[0];
+              var mes=array[1];
+              var dia=array[2];
+    		$('#atendidos').append('<tr id='+datos[i].carnet+'class="clientes"><td id="carnet_'+datos[i].carnet+'">'+datos[i].carnet+'</td><td id="nombre_'+datos[i].nombre+'">'+datos[i].nombre+'</td><td id="apellido1_'+datos[i].apellido1+'">'+datos[i].apellido1+'</td><td id="apellido2_'+datos[i].apellido2+'">'+datos[i].apellido2+'</td><td id="atender"><a class="btn btn-warning" onclick=get_cliente('+datos[i].carnet+','+ano+','+mes+','+dia+')><i class="fa fa-eye"></i></a></td></tr>'); 
+
+
+    	}
+    	$("#sample_10").DataTable({});
+    	var tableWrapper = jQuery('#sample_10_wrapper');
+        tableWrapper.find('.dataTables_length select').select2();
+
+    
+	
+    });
+  
+   
+   
+
+  // 
+   /*
+    
+    
+	*/
+
+  
+
+		// body...
+	}	
+
+function vaciar_atendidos() {
+	for(var i = 0; i < $('#atendidos').children().length; i+1){
+        $('#atendidos').children().eq(i).remove();
+    }
+
+	}
+
+	
+
+function get_cliente(carnet,ano,mes,dia)
+  { 
+  	vaciar_detalles();
+  	var carnet = carnet;
+
+  	var date=ano+'-'+mes+'-'+dia;
+ 
+   var url='http://'+document.location.hostname+':'+document.location.port+'/directorio/detalles_modal_atendidos';
+   $.get(url+"/"+carnet+"/"+date, function (datos){
+   	datos=JSON.parse(datos);
+  
+
+ for (var i = 0; i < datos.length; i++) {
+
+  $('#mostrar').append('<tr><td>'+datos[i].carnet+'</td><td>'+datos[i].nombre+'</td><td>'+datos[i].apellido1+'</td><td>'+datos[i].apellido2+'</td><td>'+datos[i].direccion+'</td><td>'+datos[i].cantidad+'</td><td>'+datos[i].total+'</td></tr>'); 
+
+
+ }
+
+    });
+  
+
+var url='http://'+document.location.hostname+':'+document.location.port+'/directorio/detalles_modal_servicio';
+   $.get(url+"/"+carnet+"/"+date, function (lis){
+  
+   mostrar=JSON.parse(lis)
+  
+
+    for (var i = 0; i < mostrar.length; i++) {  
+   
+       $('#servicios').append('<tr><td>'+mostrar[i].nomb_servicio+'</td><td id="precio_'+i+'">'+mostrar[i].precio+'</td><td id="cantidad_'+i+'"></td><td id="total_'+i+'"></td></tr>');
+
+    }
+
+
+var url='http://'+document.location.hostname+':'+document.location.port+'/directorio/cantidades';
+   $.get(url+"/"+carnet+"/"+date, function (p){
+   	 b=JSON.parse(p);
+   	 
+   	 for (var j = 0; j < b.length; j++){
+
+   	 	var cant = b[j];
+   	// alert(cant);
+   	 	$('#cantidad_'+j).text(cant);
+   	 	var prec = mostrar[j].precio;
+   	 	var tot = prec*cant;
+   	 	$('#total_'+j).text(tot);
+   	 
+
+   //	 	var prec =parseFloat($('#precio_'+j).val());
+   	 	
+   //	 	var cant = parseFloat( $('#cantidad_'+.id).val());
+
+
+
+   	 }
+
+
+});
+
+
+
+
+
+});
+
+
+    $('#detalles2').modal('show');
+
+
+
+}
+ 
+function vaciar_detalles(){
+	$('#detalles2').modal('hide');
+
+	for(var i = 0; i < $('#mostrar').children().length; i+1){
+        $('#mostrar').children().eq(i).remove();
+        $('#servicios').children().eq(i).remove()
+    }
+for(var i = 0; i < $('#servicios').children().length; i+1){
+ 
+        $('#servicios').children().eq(i).remove();
+    //    $('#cantidad_'+i).remove();
+    }
+} 
+
+
+
+
+
+/////////////EXPORTAR A EXCEL///////////////////
+function Excel(){
+    $('#modal').table2excel({
+        filename: "Reporte.xls"
+    });
+}
+/////////////EXPORTAR A PDF///////////////////
+   function test() {
+        // Get the element.
+        var element = document.getElementById('modal');
+
+        // Generate the PDF.
+        html2pdf().from(element).set({
+          margin: 1,
+          filename: 'Reporte.pdf',
+          html2canvas: { scale: 5 },
+          jsPDF: {orientation: 'portrait', unit: 'in', format: 'letter', compressPDF: false}
+        }).save();
+      }
+
+
+
+
+function limpiar() {
+	window.location='/directorio/clientes_atendidos/';
+	
+
+}
+
+
+
+
+
+
+</script>
+
+{% endblock %}

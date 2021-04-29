@@ -1,0 +1,91 @@
+{% extends "index.html" %}
+
+{% load static %}
+
+{% block content %}
+
+<form role="form" class="form-horizontal" method="POST">
+  <br>
+                 {% csrf_token %}
+
+                               {% for hidden in form.hidden_fields %} 
+
+                                 {{ hidden }}
+   
+ 
+                                {% endfor %}
+
+<div class="col-md-5">
+      <div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption font-silver-haze">
+								
+								<span class="caption-subject bold uppercase"> Cambio de Contraseña</span>
+							</div>
+							
+						</div>
+			
+
+    <div class="portlet-body form" align="center">
+
+    				<div class="form-group form-md-line-input" align="center">
+						<label class="col-md-2 control-label" for="{{ form.old_password.id_for_label }}"></label>
+										
+							<div class="col-md-5">
+								<input type="password" class="form-control"  placeholder="Contraseña Actual", required="True" id="id_old_password" name="old_password">
+							    <div class="form-control-focus"></div>
+							</div>
+					</div>
+
+					<div class="form-group form-md-line-input">
+						<label class="col-md-2 control-label" for="{{ form.new_password1.id_for_label }}"></label>
+										
+							<div class="col-md-5">
+								<input type="password" class="form-control" name="new_password1"  placeholder="Contraseña Nueva", required="True" id="id_new_password1">
+							    <div class="form-control-focus"></div>
+							</div>
+					</div>
+
+					<div class="form-group form-md-line-input">
+						<label class="col-md-2 control-label" for="{{ form.new_password2.id_for_label }}"></label>
+										
+							<div class="col-md-5">
+								<input type="password" class="form-control" name="new_password2" id="id_new_password2" placeholder="Confirmar Contraseña", required="True">
+							    <div class="form-control-focus"></div>
+							</div>
+					
+
+
+
+					</div>
+             <div>
+             <ul style="text-align: left; color: gray; list-style: none">
+             	<li>Su contraseña no puede ser muy similar a su otra información personal.</li>
+             	<li>Su contraseña es muy corta. Debe contener al menos 8 caracteres.</li>
+             	<li>Su contraseña no puede ser una contraseña de uso común.</li>
+             	<li>Su contraseña no puede ser completamente numérica.</li>
+             </ul>
+             </div>
+			<br>
+       
+
+		
+	   <button type="submit" class="btn btn-success uppercase">Cambiar</button>
+    </div>	
+					
+</div>
+</div>
+</form> 
+
+
+<!-- END PAGE LEVEL SCRIPTS -->
+<script>
+
+
+
+
+
+</script>
+<!-- END JAVASCRIPTS -->
+
+{% endblock %}

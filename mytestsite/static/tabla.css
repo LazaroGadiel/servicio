@@ -1,0 +1,22 @@
+
+table{
+	
+	text-align: center;
+	background-color: white;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th,td{
+text-align: center;
+	
+	padding: 0;
+}
+
+thead{
+	background-color: white;
+	border-bottom: solid 0.1em #0F362D;
+	color: black;
+}
+
+

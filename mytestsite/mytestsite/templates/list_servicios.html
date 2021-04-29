@@ -1,0 +1,199 @@
+{% extends "base_usuarios.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<form>
+	<br>
+<div class="portlet light">
+<div class="panel row">
+               
+
+      <div class="col-md-8">
+            <div class="portlet box blue" >
+	            <div class="portlet-title" align="center">
+		         <div class="caption font-silver-haze" style="padding-left: 35%">
+								
+								<span class="caption-subject bold uppercase"> Listado de Servicios</span>
+							</div>
+	            </div>					
+				
+				<div class="portlet-body">
+				    <div class="table" id="table">
+				    	<link rel="stylesheet" > 
+							<table class="table table-hover table-condensed" id="tabla_servicios">
+								<thead>
+								<tr>
+									<th>
+										 Servicio
+									</th>
+									<th>
+										 Precio
+									</th>
+									<th>
+										 Descripción
+									</th>
+									
+									<th>
+										 Acción
+									</th>
+								</tr>
+								</thead>
+								<tbody>
+									{%for serv in servicios %}
+									<tr>
+										<td>{{serv.nomb_servicio}}</td>
+										<td>$ {{serv.precio}}</td>
+										<td>{{serv.descripcion}}</td>
+										<td>
+											<div class="row" align="center" style="padding-right: 5">
+												<div class="btn-group">
+													<a class="btn btn-success" onclick="carrito({{serv.id}})">
+														<i class="fa fa-plus-square"></i></a>
+												</div>
+											</div>
+										</td> 
+									</tr>  
+									{%endfor%}
+       
+								</tbody>
+							</table>
+					</div>
+				</div>
+            </div>
+
+     </div>
+
+   <div class="col-md-4">
+     <div class="portlet box yellow" >
+               
+              <div class="portlet-title">
+		 
+                
+		            <div class="caption font-silver-haze" style="padding-left: 30%">
+					 <img src="{% static 'cart.jpeg' %}" alt="" height="50em" width="50em">			
+					<span class="caption-subject bold uppercase">Compra</span>
+					</div>
+
+	          </div>					
+	   <div class="portlet-body">
+	   	<link rel="stylesheet"> 
+		    <div class="table">
+                            <table class="table table-hover table-condensed"  id="lista_productos">
+								<thead>
+								  <tr>
+									<th>
+										 Servicio
+									</th>
+									<th>
+										 Precio
+									</th>
+									<th>
+										 Acción
+									</th>									
+								   </tr>
+								</thead>
+								<tbody id="lista">							
+                                   
+								</tbody>
+		                    </table>
+           
+              <div class="row" align="center">
+              <div class="btn-group" id="grupo_botones">	
+
+	             <a onclick="procesar()" class="btn btn-primary" id="procesar">Procesar Compra</a>
+	
+	             <button type="button" onclick="vaciar_carrito()" class="btn red-sunglo">
+                 <span class="md-click-circle md-click-animate"></span>Vaciar Carrito
+   	              </button>
+              </div>    
+              </div>
+
+            </div>
+       </div>
+    </div>
+   </div>    
+
+
+
+</div>
+</div>
+</form>
+
+
+
+
+<script>
+
+function carrito(id) {
+    
+    $('#'+id).remove(); 
+	var url='http://'+document.location.hostname+':'+document.location.port+'/directorio/agregar_carrito';
+    $.get(url+"/"+id, function (datos) {
+         $('#lista').append('<tr id='+id+' class="adicionados"><td>'+datos.servicio.nomb_servicio+'</td><td>$ '+datos.servicio.precio+'</td><td><a class="btn btn-danger" onclick="eliminar('+id+')"><i class="fa fa-trash-o"></i></a></td></tr>');
+    	  
+    });
+	// body...
+
+}
+
+function eliminar(id){
+	 $('#'+id).remove();
+	 
+}
+
+function vaciar_carrito(){
+	for(var i = 0; i < $('#lista').children().length; i+1){
+        $('#lista').children().eq(i).remove();
+    }
+
+}
+
+
+function procesar(){
+  if( $('#lista').children().length > 0 ){
+	localStorage.setItem('servicios','');
+	servicios=$('.adicionados');
+	lista=[];
+    for(var i = 0; i < servicios.length; i++){
+        lista.push(servicios[i].id);
+    }
+    localStorage.setItem('servicios',lista);
+    window.location='/directorio/procesar/';	
+  }
+
+  else{
+   // $('#modal_vacio').modal('show');
+   Swal.fire({
+ 
+   icon: 'error',
+   title: 'Oops...',
+   text: 'Elija un servicio',
+   
+});
+
+  }
+
+
+  
+
+
+
+	
+	
+}
+ 
+
+
+
+
+
+
+</script>
+
+
+
+
+
+{% endblock %}

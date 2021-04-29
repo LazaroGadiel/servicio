@@ -1,0 +1,457 @@
+{% extends "base_usuarios.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<form role="form" class="form-horizontal" method="POST" action="/directorio/pedido/">
+  <br>
+                 {% csrf_token %}
+
+                               {% for hidden in form.hidden_fields %} 
+
+                                 {{ hidden }}
+   
+ 
+                                {% endfor %}
+
+<div class="col-md-5">
+      <div class="portlet box blue">
+						<div class="portlet-title">
+							<div class="caption font-silver-haze" style="padding-left: 30%">
+								
+								<span class="caption-subject bold uppercase"> Realizar Pedido</span>
+							</div>
+							
+						</div>
+			
+
+      <div class="portlet-body form">
+
+						
+				
+
+        <div class="form-body">
+									
+
+									<div class="form-group form-md-line-input">
+										<label class="col-md-2 control-label" for="{{ form.carnet.id_for_label }}">Carnet</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" name="carnet" id="carnet" placeholder="Carnet de identidad" maxlength="11" minlength="11" , required="True" onkeypress="return solonumeros(event)">
+											<div class="form-control-focus">
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group form-md-line-input hidden">
+										 
+										<div class="col-md-5">
+										<input type="text" class="form-control" name="servicios" id="servicios">
+											 
+										</div>
+									</div>
+
+
+									<div class="form-group form-md-line-input">
+										<label class="col-md-2 control-label" for="{{ form.nombre.id_for_label }}">Nombre</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" name="nombre" placeholder="Entre su nombre" required="True" onkeypress="return sololetras(event)">
+											<div class="form-control-focus">
+											</div>
+										</div>
+									</div>
+
+		              <div class="form-group form-md-line-input">
+										<label class="col-md-2 control-label" for="{{ form.apellido1.id_for_label }}">Apellido</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" name="apellido1" placeholder="Primer Apellido" required="True" onkeypress="return sololetras(event)">
+											<div class="form-control-focus">
+											</div>
+										</div>
+									</div>
+
+
+									<div class="form-group form-md-line-input">
+										<label class="col-md-2 control-label" for="{{ form.apellido2.id_for_label }}">Apellido</label>
+										<div class="col-md-5">
+											<input type="text" class="form-control" name="apellido2" placeholder="Segundo Apellido" required="True" onkeypress="return sololetras(event)">
+											<div class="form-control-focus">
+											</div>
+										</div>
+									</div>
+
+
+									
+									<div class="form-group form-md-line-input">
+										<label class="col-md-2 control-label" for="{{ form.provincia.id_for_label }}">Provincia</label>
+										<div class="col-md-5">
+											<div>{{ form.provincia }}</div> 
+											<div class="form-control-focus">
+											</div>
+										</div>
+									</div>
+
+
+									<div class="form-group form-md-line-input">
+						                <label class="col-md-2 control-label" for="{{ form.municipio.id_for_label }}">Município</label>
+							            <div class="col-md-5">
+								        <select name='municipio' class='form-control' id='municipio_id'></select>
+								
+								
+							            </div>
+					                </div>
+					
+
+
+									<div class="form-group form-md-line-input">
+										<label class="col-md-2 control-label" for="{{ form.direccion.id_for_label }}">Dirección</label>
+										<div class="col-md-10">
+											<textarea class="form-control" name="direccion" rows="3" placeholder="Dirección aquí"></textarea>
+											<div class="form-control-focus">
+											</div>
+										</div>
+									</div>
+									
+								<div class="form-group form-md-line-input has-success hidden">
+                  <label for="{{ form.atendido.id_for_label }}" class="col-md-2 control-label"></label>
+                               <div class="col-md-10">
+                                  <input type="text" name="atendido" value="no">
+                              </div>
+                </div>
+								
+			</div>
+</div>						
+</div>
+</div>
+  
+  <div class="col-md-7">
+                   <div class="portlet box yellow" >
+                      <div class="portlet-title">
+		                 <div class="caption font-silver-haze" style="padding-left: 40%">
+                
+                <span class="caption-subject bold uppercase"> Su Lista de Compra</span>
+              </div>
+	                  </div>					
+	                <div class="portlet-body">			
+						 <table class="table table-hover" style="width: 100%" id="lista_compra">
+								<thead>
+								<tr>
+									<th id="th_servicio">
+										 Servicio
+									</th>
+									<th id="th_precio">
+										 Precio
+									</th>
+									<th id="th_cantidad">
+										 Cantidad
+									</th>
+
+									<th id="th_sub_total">
+										 Sub Total
+									</th>
+
+									<th id="th_eliminar">
+										Eliminar
+									</th>
+									
+								</tr>
+								</thead>
+								<tbody id="lista">
+
+									
+                                
+								</tbody>
+								
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td>Total <div id="total_general"></div></td>
+									<td></td>
+								</tr>
+                                	
+                                  
+			         </table>
+              <div class="form-actions" align="center" style="padding-right: 20%">
+                        <div class="row">
+                          <div class="col-md-offset-3 col-md-9">
+                            <button type="button" onclick="capturar()" class="btn btn-primary">Enviar</button>
+                            <a href="{% url 'list_servicios'%}" type="button"  class="btn red-sunglo">Cancelar</a>
+                          </div>
+                        </div>
+                      </div>
+              </div>
+           
+
+            </div>
+			                
+	</div>		
+
+
+
+              <div class="modal fade bs-modal-sm" id="confirmar" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                      <h3 class="modal-title" align="center">Enviar</h3>
+                    </div>
+                    <div class="modal-body">
+                        <div class="swal2-icon swal2-question swal2-icon-show" style="display: flex;">
+                            <div class="swal2-icon-content">?</div>
+                         </div>
+                       <h4 align="center">¿Desea enviar el pedido?</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <input type="submit" class="btn btn-success" value="Enviar" style="margin-right: 35%">
+                    </div>
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+
+
+
+<div class="modal fade" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+                <h4>¿Confirmas el envio?</h4>
+            </div>
+            <div class="modal-body">
+             
+             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn default" data-dismiss="modal">Cancelar</button>   
+              <input type="submit"  id="si" class="btn btn-success" value="Confirmar">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+ </form>
+		
+
+<div>
+  <img src="{% static 'Robot-03.png'%}" alt="" width="15%">
+</div>
+
+
+					
+
+<script> 
+
+    function confirm_eliminar(){
+    	 $("#confirmar").modal('show');
+
+    }
+ 
+    function eliminar(id){	
+      //$("#eliminar_servicio").modal('show');
+
+        total=parseFloat($('#total_general').text());
+        sub_total=parseFloat($('#subtotal_'+id).text());
+        $('#total_general').text(total-sub_total);	
+        $('#'+id).remove();
+
+    
+     
+  
+     
+     if((total-sub_total) == 0){
+
+      (async () => {
+
+        await Swal.fire({
+ 
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Elija un servicio',
+        
+   
+      });
+       window.location='/directorio/list_servicios/';
+      })()
+        
+
+   
+  
+     }
+	}
+ 
+
+    servicios='';
+    function cargar(){
+    servicios=localStorage.getItem('servicios');
+	var url='http://'+document.location.hostname+':'+document.location.port+'/directorio/cargar_servicios/'+servicios;
+	 
+    $.get(url, function (datos) {
+    	datos=JSON.parse(datos);
+    	for (var i = 0; i < datos.length; i++) {
+    		$('#lista').append('<tr id='+datos[i].id+' class="adicionados"><td id="nombS_'+datos[i].id+'">'+datos[i].nomb_servicio+'</td><td id="precS">$ '+datos[i].precio+'</td><td><input type="number" class="form-control" min="1" value="1" id="cantidad_'+datos[i].id+'" name="cantidad" onkeypress="return solonumeros(event)"></td><td id="subtotal_'+datos[i].id+'"></td><td><a class="btn btn-danger" onclick="eliminar('+datos[i].id+')"><i class="fa fa-trash-o"></i></a></td></tr>'); 
+
+
+    	   
+    	    $('#cantidad_'+datos[i].id).keyup( function() {
+    	        
+               calcular(datos);
+
+             } );
+
+    	     $('#cantidad_'+datos[i].id).change( function() {
+    	        
+               calcular(datos);
+
+             } );
+
+    	}
+
+        calcular(datos);
+    	
+    	  
+    });	
+    }
+
+    function calcular(datos){
+    	var total= 0;
+     for (var i = 0; i < datos.length; i++) {
+
+    		var cant = parseFloat( $('#cantidad_'+datos[i].id).val() );
+    		
+    		if(!isNaN(cant)){
+    		
+    		var valor=datos[i].precio*cant;
+    	    total= valor+total;
+
+    		$('#subtotal_'+datos[i].id).text(valor);	
+    		} 
+    		
+    		if(isNaN(cant)){
+    			$('#cantidad_'+datos[i].id).val(1);
+    			cant=1;
+    			
+    			var valor=datos[i].precio*cant;
+    			
+    			
+    		    $('#subtotal_'+datos[i].id).text(valor);
+    		}
+            
+             
+    	}
+
+
+            $('#total_general').text(total);
+              
+    }
+	
+
+
+	
+
+    function solonumeros(e){
+	 	
+    key=e.keyCode || e.which;
+    teclado=String.fromCharCode(key);
+    numeros="0123456789";
+    especiales="8-37-38-46";
+    teclado_especial=false;
+
+    for(var i in especiales){
+      if(key==especiales[i]){
+        teclado_especial=true;
+         
+      }
+    }
+     if(numeros.indexOf(teclado)==-1 && !teclado_especial){
+      return false;
+    }
+   
+   }
+
+   function sololetras(e){
+    key=e.keyCode || e.which;
+    teclado=String.fromCharCode(key).toLowerCase();
+    letras="abcdefghijklmnñopqrstuvwxyz ";
+    especiales="8-37-38-46-164";
+    teclado_especial=false;
+
+    for(var i in especiales){
+      if(key==especiales[i]){
+        teclado_especial=true;break;
+      }
+    }
+    if(letras.indexOf(teclado)==-1 && !teclado_especial){
+      return false;
+    } 
+  }
+
+
+
+   function capturar() {
+    
+    function Pedido_servicio(id_servicio,subtotal,cantidad){
+      	this.id_servicio=id_servicio;
+      	this.cantidad=cantidad;
+      	this.subtotal=subtotal; 
+      	    	
+    }
+   
+    var Servicios_Llenar = [];
+    x=servicios.split(','); 
+   
+    for(var i = 0; i < x.length; i++){    
+    
+    var id_servicio=x[i];
+    var cantidad = parseFloat( $('#cantidad_'+x[i]).val());
+    var subtotal = parseFloat( $('#subtotal_'+x[i]).text());
+    
+     
+    if(!isNaN(cantidad)){
+    var nuevoPedido = new Pedido_servicio(id_servicio,subtotal,cantidad);
+    Servicios_Llenar.push(nuevoPedido);	
+    }
+    
+    }
+    $('#servicios').val(JSON.stringify(Servicios_Llenar));
+    $("#confirmar").modal('show');
+   
+
+/*
+   Swal.fire({
+ 
+        icon: 'question',
+        title: 'Enviar',
+       
+        
+        html: '<h4>¿Desea enviar la solicitud?</h4><br><input type="submit" class="btn btn-success" value="Confirmar">',
+
+        showConfirmButton: false,
+       
+   
+      });
+
+*/
+
+     
+}
+
+</script>
+											
+					
+												
+
+
+								
+
+
+
+
+
+
+{% endblock %}

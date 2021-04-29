@@ -1,0 +1,190 @@
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block content %}
+
+
+
+<div class="tab-content">
+ <div class="tab-pane active" id="tab_0">
+	<div class="portlet box blue">
+		<div class="portlet-title">
+		    <div class="caption">
+			  <i class="fa fa-gift"></i>Realizar Pedido
+			</div>
+										
+		</div>
+	 <div class="portlet-body form">
+										<!-- BEGIN FORM-->
+			<form method="POST" class="form-horizontal">
+				{% csrf_token %}
+
+                {% for hidden in form.hidden_fields %} 
+
+                 {{ hidden }}
+   
+ 
+                {% endfor %}
+ 
+				<div class="form-body">
+					<div class="form-group">
+						<label class="col-md-3 control-label" for="{{ form.provincia.id_for_label }}">Provincia</label>
+							<div class="col-md-4">
+								<div>{{ form.provincia }}</div> 
+								
+							</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-3 control-label" for="{{ form.municipio.id_for_label }}">Municipio</label>
+							<div class="col-md-4">
+								<select name='municipio' class='form-control' id='municipio_id'></select>
+								
+								
+							</div>
+					</div>
+					
+
+
+
+
+
+
+												
+		         </div>
+			<br>					
+			    <table class="table table-hover" style="width: 100%">
+								<thead>
+								<tr>
+									<th>
+										 Servicio
+									</th>
+									<th>
+										 Precio
+									</th>
+									<th>
+										 Cantidad
+									</th>
+
+									<th>
+										 Sub Total
+									</th>
+
+									<th>
+										Eliminar
+									</th>
+									
+								</tr>
+								</thead>
+								<tbody>
+
+									{%for serv in serv %}
+									{% if serv.temporal == "si" %}
+
+										<tr>
+										<td>{{serv.nomb_servicio}}</td>
+										<td >
+											<p id="precio">{{serv.precio}}</p>
+										</td>
+										<td>
+
+										<input type="number" class="form-control" min="1" value="1" style="width: 30%" id="cantidad" name="cantidad">
+										</td>
+										<td>
+										 <p id="subtotal"></p>	
+										</td>
+										<td>
+											<div class="row" align="center" style="padding-right: 30">
+												<div class="btn-group">
+													<a class="btn btn-danger" href="{% url 'temporalno_pedido' serv.id %}">
+														<i class="fa fa-minus"></i></a>
+												</div>
+											</div>
+										</td>
+										
+									</tr> 
+									{% endif %}
+										
+									
+									
+								
+									{%endfor%}
+                                   
+								</tbody>
+					 </table>
+		        <input type="button" name="llll" onclick="mostrar()" >
+	                                       <div class="form-actions" align="center" style="padding-right: 20%">
+												<div class="row">
+													<div class="col-md-offset-3 col-md-9">
+														<button type="submit" class="btn btn-circle blue">Enviar</button>
+														<a href="{% url 'list_servicios'%}" type="button" class="btn btn-circle default">Cancelar</a>
+													</div>
+												</div>
+											</div>
+
+		    </form>
+										<!-- END FORM-->
+	 </div>
+    </div>
+								
+								
+								
+								
+ </div>
+</div>
+
+<!--
+<script type="text/javascript">
+	$(document).ready(function(){
+
+		$('#cantidad').keyup(function() {
+
+			var cant = parseFloat( $('#cantidad').val() );
+            var precio = parseFloat(document.getElementById('precio').textContent);
+            var valor=precio*cant;
+
+            $('#subtotal').text(valor);
+
+        })
+
+
+
+
+
+
+
+	});
+</script>
+-->						
+
+<script type="text/javascript">
+	
+	function mostrar(){
+       
+            
+            var cant = parseFloat( $('#cantidad').val() );
+            var precio = parseFloat(document.getElementById('precio').textContent);
+            var valor=precio*cant;
+
+         
+
+
+            $('#subtotal').text(valor);
+
+
+
+	}
+</script>
+											
+					
+												
+
+
+								
+
+
+
+
+
+
+{% endblock %}
